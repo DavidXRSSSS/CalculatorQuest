@@ -1,0 +1,11 @@
+create table if not exists public.admin_users (user_id uuid primary key references auth.users(id) on delete cascade, username text not null unique, role text not null check (role in ('OWNER','CO-OWNER')), active boolean not null default true, created_at timestamptz not null default now());
+alter table public.admin_users add column if not exists username text;
+create unique index if not exists admin_users_username_idx on public.admin_users (lower(username));
+create table if not exists public.game_sessions (id uuid primary key default gen_random_uuid(), username text not null, status text not null default 'waiting', hp integer not null default 0, max_hp integer not null default 0, phase integer not null default 1, difficulty text, heart_speed numeric, attack_speed numeric, effects jsonb not null default '[]'::jsonb, updated_at timestamptz not null default now());
+create table if not exists public.game_attacks (id uuid primary key default gen_random_uuid(), name text not null, description text, damage integer not null default 0, duration numeric, speed numeric, projectile_count integer, direction text, size numeric, shape text, pattern text, frequency numeric, rotation numeric, collision text, color text, particles boolean default false, shake boolean default false, sound text, animation text, behavior jsonb not null default '{}'::jsonb, phases integer[] not null default '{1,2,3}', active boolean not null default true, updated_at timestamptz not null default now());
+create table if not exists public.admin_logs (id uuid primary key default gen_random_uuid(), admin_user_id uuid references public.admin_users(user_id), action text not null, affected_player_id uuid references public.game_sessions(id), result text not null, created_at timestamptz not null default now());
+alter table public.admin_users enable row level security;
+alter table public.game_sessions enable row level security;
+alter table public.game_attacks enable row level security;
+alter table public.admin_logs enable row level security;
+revoke all on public.admin_users, public.game_sessions, public.game_attacks, public.admin_logs from anon, authenticated;
