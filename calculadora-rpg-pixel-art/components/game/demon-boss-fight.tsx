@@ -62,14 +62,15 @@ const AURAS = [
 ]
 
 function layout(W: number, H: number) {
-  const boxW = Math.min(460, W * 0.88)
-  const boxH = Math.min(220, Math.max(150, H * 0.28))
+  const boxW = Math.min(500, W * 0.86)
+  const boxH = Math.min(250, Math.max(175, H * 0.3))
   const boxX = (W - boxW) / 2
-  const boxY = H - boxH - 84
-  const bossW = Math.min(W * 0.96, Math.max(160, (boxY - 58) * 2), 820)
-  const bossH = bossW / 2
+  const boxY = H - boxH - 92
+  // Keep the boss above the play area so the sprite never covers the soul arena.
+  const bossW = Math.min(300, W * 0.52)
+  const bossH = bossW * 0.44
   const bossX = (W - bossW) / 2
-  const bossY = Math.max(18, boxY - 40 - bossH)
+  const bossY = Math.max(54, boxY - bossH - 42)
   return { boxW, boxH, boxX, boxY, bossW, bossH, bossX, bossY }
 }
 
@@ -664,14 +665,20 @@ export function DemonBossFight({ muted, onFinish }: { muted: boolean; onFinish: 
     }
 
     const drawTitle = () => {
-      const size = Math.max(8, Math.min(14, Math.floor(W / 44)))
+      const size = Math.max(9, Math.min(14, Math.floor(W / 48)))
+      const y = L.boxY - 18
       c.font = `${size}px ${font}`
-      c.textAlign = 'center'
       c.textBaseline = 'middle'
-      c.fillStyle = '#7a0010'
-      c.fillText(TITLE, W / 2 + 2, L.boxY - 20 + 2)
+      c.textAlign = 'left'
       c.fillStyle = '#fff'
-      c.fillText(TITLE, W / 2, L.boxY - 20)
+      c.fillText('EL CONDUCTOR', L.boxX, y)
+      c.textAlign = 'right'
+      c.fillStyle = '#ffd23f'
+      c.fillText('FASE 1/2', L.boxX + L.boxW, y)
+      c.textAlign = 'center'
+      c.font = `${Math.max(7, size - 2)}px ${font}`
+      c.fillStyle = '#ff8a94'
+      c.fillText(TITLE, W / 2, L.bossY - 18)
     }
 
     const drawBlaster = (b: Extract<Bullet, { kind: 'blast' }>) => {
