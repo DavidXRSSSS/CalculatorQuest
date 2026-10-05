@@ -17,6 +17,7 @@ import { DemonBossFight } from './demon-boss-fight'
 import { FibonacciFight } from './fibonacci-fight'
 import { CatKnightFight } from './cat-knight-fight'
 import { playMeow } from '@/lib/game/cat-audio'
+import { MultiplayerRooms } from './multiplayer-rooms'
 
 type Stage = 'calc' | 'entering' | 'cracking' | 'splitting' | 'combat' | 'victory' | 'rejoining' | 'defeat' | 'gameover'
 
@@ -608,6 +609,7 @@ export function Game() {
               </div>
             </div>
           )}
+          <MultiplayerRooms />
           <p className="credit fixed bottom-3 right-4 z-40 font-pixel text-[11px] text-muted-foreground">Hecho por David_XRS</p>
         </>
     </main>
