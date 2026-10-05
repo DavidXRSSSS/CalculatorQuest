@@ -18,6 +18,7 @@ import { FibonacciFight } from './fibonacci-fight'
 import { CatKnightFight } from './cat-knight-fight'
 import { playMeow } from '@/lib/game/cat-audio'
 import { MultiplayerRooms } from './multiplayer-rooms'
+import { RoadBossFight } from './road-boss-fight'
 
 type Stage = 'calc' | 'entering' | 'cracking' | 'splitting' | 'combat' | 'victory' | 'rejoining' | 'defeat' | 'gameover'
 
@@ -109,6 +110,7 @@ export function Game() {
   const [fibActive, setFibActive] = useState(false)
   const [catBoot, setCatBoot] = useState(false)
   const [catActive, setCatActive] = useState(false)
+  const [roadBossActive, setRoadBossActive] = useState(false)
   const [achievement, setAchievement] = useState<{ icon: string; text: string; color: string } | null>(null)
   const [soulPos, setSoulPos] = useState<{ x: number; y: number } | null>(null)
   const [enemies, setEnemies] = useState<EnemySpec[]>([])
@@ -214,6 +216,15 @@ export function Game() {
   const equals = () => {
     if (!expr) return
     const compact = expr.replace(/\s/g, '')
+    if (compact === '0.12') {
+      cancelScheduled()
+      sfx.play('equals')
+      setResultText('DEER_ALERT_INIT')
+      setJustEvaluated(true)
+      setRevealKey((k) => k + 1)
+      setRoadBossActive(true)
+      return
+    }
     if (compact === '666' || compact === '1÷0' || compact === '1/0') {
       cancelScheduled()
       sfx.play('equals')
@@ -409,6 +420,11 @@ export function Game() {
     }, 750)
   }
 
+  const finishRoadBoss = useCallback(() => {
+    setRoadBossActive(false)
+    setAchievement({ icon: '✦', text: '[ASCENSIÓN VIAL] - Has superado al conductor sagrado', color: '#ffd23f' })
+  }, [])
+
   const toggleMute = () => {
     const next = !muted
     setMuted(next)
@@ -575,6 +591,12 @@ export function Game() {
                   setAchievement({ icon: 'φ', text: 'SECTOR ÁUREO COMPLETADO', color: '#ffd23f' })
                 } else setJustEvaluated(false)
               }}
+            />
+          )}
+          {roadBossActive && (
+            <RoadBossFight
+              muted={muted}
+              onFinish={finishRoadBoss}
             />
           )}
           {catActive && (

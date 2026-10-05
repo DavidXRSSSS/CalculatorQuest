@@ -1,4 +1,16 @@
 @import 'tailwindcss';
+
+.road-boss-overlay{position:fixed;inset:0;z-index:120;display:grid;place-items:center;padding:5rem 1rem 4rem;pointer-events:none;background:rgba(0,0,0,.28)}
+.road-boss-box{width:min(92vw,500px);border:4px solid #fff;background:#000;box-shadow:8px 8px 0 #262626;font-family:var(--font-press),monospace;color:#fff}
+.road-boss-header,.road-boss-status{display:flex;align-items:center;justify-content:space-between;gap:.75rem;padding:.65rem .8rem;font-size:.62rem;letter-spacing:.04em}
+.road-boss-arena{position:relative;height:min(45vh,260px);overflow:hidden;border-block:3px solid #fff;background:#050505}
+.road-boss-sprite{position:absolute;left:50%;top:50%;width:min(58%,250px);max-height:86%;object-fit:contain;transform:translate(-50%,-50%);image-rendering:pixelated;animation:road-boss-idle 1.1s steps(4,end) infinite;mix-blend-mode:screen}
+.road-boss-sprite.angelical{animation-duration:1.8s;filter:drop-shadow(0 0 12px #ffd23f)}.road-boss-sprite.disintegrate{animation:road-boss-disintegrate 1.8s steps(5,end) forwards}
+.road-car{position:absolute;z-index:2;color:#ff3f3f;font-size:2rem;animation:road-car-cross 1.2s linear infinite}.road-car-2{color:#ffd23f;animation-duration:.8s}
+.road-projectile{position:absolute;color:#ff3f3f;animation:road-projectile 1s linear infinite}.projectile-a{left:12%;top:18%}.projectile-b{right:14%;bottom:18%;animation-delay:-.45s}.road-car-2~.road-projectile{color:#fff3a3}
+.light-warning{position:absolute;inset:0 18%;border-inline:3px solid #fff3a3;opacity:.55;animation:warning-flash .45s steps(2,end) infinite}.divine-flash{position:absolute;inset:0;z-index:5;background:#fff;animation:divine-flash .7s steps(2,end) forwards}
+.road-hp-track{flex:1;height:.7rem;border:2px solid #fff;background:#271010}.road-hp-fill{height:100%;background:#ff3f3f;transition:width .2s linear}.road-boss-copy{color:#ffd23f;font-size:.55rem}
+@keyframes road-boss-idle{50%{transform:translate(-50%,calc(-50% - 8px))}}@keyframes road-boss-disintegrate{to{opacity:0;transform:translate(-50%,-50%) scale(1.4);filter:brightness(3) blur(5px)}}@keyframes road-car-cross{from{transform:translateX(-120px) rotate(-8deg)}to{transform:translateX(520px) rotate(8deg)}}@keyframes road-projectile{from{transform:translate(0,0) rotate(0)}to{transform:translate(300px,120px) rotate(360deg)}}@keyframes warning-flash{50%{opacity:0}}@keyframes divine-flash{from{opacity:1}to{opacity:0}}
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
 
